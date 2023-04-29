@@ -340,6 +340,10 @@ from .platforms.Desktop.desktop_screen import {name_screen}DesktopView
 """
 
 temp_responsive_platform_baseclass = """from kivymd.uix.screen import MDScreen
+from kivy.lang import Builder
+from os.path import dirname, join, basename
+
+Builder.load_file(join(dirname(__file__), basename(__file__).replace(".py", ".kv")))
 
 
 class {}View(MDScreen):
