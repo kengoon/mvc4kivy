@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "mvc4kivy"
+version = "0.1.0"
+description = ""
+authors = ["Kenechukwu Akubue <kengoon19@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+kivy = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+m4k-createproject = "mvc4kivy.create_project:main"
+m4k-addview = "mvc4kivy.add_view:main"
