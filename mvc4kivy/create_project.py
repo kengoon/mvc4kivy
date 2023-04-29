@@ -1058,7 +1058,7 @@ def create_view(
             if name_screen not in use_responsive
             else temp_code_responsive_view.format(
                 name_screen=name_screen,
-                parenthesis="()" if instantiate_responsive_view else ""
+                parenthesis="()" if instantiate_responsive_view == "yes" else ""
             )
         )
 
