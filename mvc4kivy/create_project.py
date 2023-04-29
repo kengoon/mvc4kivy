@@ -312,9 +312,9 @@ temp_screens_imports = """# The screens dictionary contains the objects of the m
 temp_code_responsive_view = '''from kivymd.uix.responsivelayout import MDResponsiveLayout
 
 from View.{name_screen}.components import (
-    {name_screen_prefix}MobileScreenView,
-    {name_screen_prefix}TabletScreenView,
-    {name_screen_prefix}DesktopScreenView,
+    {name_screen}MobileView,
+    {name_screen}TabletView,
+    {name_screen}DesktopView,
 )
 from View.base_screen import BaseScreenView
 
@@ -322,9 +322,9 @@ from View.base_screen import BaseScreenView
 class {name_screen}View(MDResponsiveLayout, BaseScreenView):
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.mobile_view = {name_screen_prefix}MobileScreenView{parenthesis}
-        self.tablet_view = {name_screen_prefix}TabletScreenView{parenthesis}
-        self.desktop_view = {name_screen_prefix}DesktopScreenView{parenthesis}
+        self.mobile_view = {name_screen}MobileView{parenthesis}
+        self.tablet_view = {name_screen}TabletView{parenthesis}
+        self.desktop_view = {name_screen}DesktopView{parenthesis}
 
     def model_is_changed(self) -> None:
         """
@@ -1049,13 +1049,11 @@ def create_view(
     ) as init_module:
         init_module.write("")
     with open(f"{view_module}.py", "w", encoding="utf-8") as view_file:
-        name_screen_prefix = re.findall("[A-Z][a-z]*", name_screen)[0]
         view_file.write(
             temp_code_view.format(name_screen=name_screen)
             if name_screen not in use_responsive
             else temp_code_responsive_view.format(
                 name_screen=name_screen,
-                name_screen_prefix=name_screen_prefix,
                 parenthesis="()" if instantiate_responsive_view else ""
             )
         )
