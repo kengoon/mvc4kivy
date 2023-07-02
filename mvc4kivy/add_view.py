@@ -152,7 +152,7 @@ def create_screens_data(
 
         for name in os.listdir(path_to_view):
             if os.path.isdir(os.path.join(path_to_view, name)):
-                res = re.findall("[A-Z][a-z]*", name)
+                res = re.findall(r"[A-Z][^A-Z]*", name)
                 # if res and len(res) == 2 and res[-1] == "Screen":
                 if res and len(res) > 1 and res[-1] == "Screen":
                     screens += (

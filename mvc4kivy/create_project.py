@@ -1200,7 +1200,7 @@ def check_databases() -> None:
 
 
 def chek_camel_case_name_project(name_project) -> Union[bool, list]:
-    result = re.findall("[A-Z][a-z]*", name_project)
+    result = re.findall(r"[A-Z][^A-Z]*", name_project)
     return False if len(result) == 1 else result
 
 
