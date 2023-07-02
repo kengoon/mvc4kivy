@@ -164,7 +164,7 @@ def create_screens_data(
                                 f"{' '.join(res).lower()}",
                                 f'{"".join(res)}Model',
                                 f'{"".join(res)}Controller',
-                                f'{os.path.join(path_to_view, name, f"{module_name}.kv")}',
+                                f'"{os.path.join(path_to_view, name, f"{module_name}.kv")}"',
                             )
                     )
 

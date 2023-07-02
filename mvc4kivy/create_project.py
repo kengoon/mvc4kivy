@@ -334,9 +334,9 @@ class {name_screen}View(MDResponsiveLayout, BaseScreenView):
         """
 '''
 
-temp_responsive_component_imports = """from .platforms.Mobile.mobile_screen import {name_screen}MobileView
-from .platforms.Tablet.tablet_screen import {name_screen}TabletView
-from .platforms.Desktop.desktop_screen import {name_screen}DesktopView
+temp_responsive_component_imports = """from .platforms.Mobile.mobile import {name_screen}MobileView
+from .platforms.Tablet.tablet import {name_screen}TabletView
+from .platforms.Desktop.desktop import {name_screen}DesktopView
 """
 
 temp_responsive_platform_baseclass = """from kivymd.uix.screen import MDScreen
