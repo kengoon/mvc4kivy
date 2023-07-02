@@ -343,7 +343,7 @@ temp_responsive_platform_baseclass = """from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from os.path import dirname, join, basename
 
-Builder.load_file(join(dirname(__file__), basename(__file__).replace(".py", ".kv")))
+Builder.load_file(join(dirname(__file__), basename(__file__).split(".")[0] + ".kv"))
 
 
 class {}View(MDScreen):
