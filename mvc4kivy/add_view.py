@@ -156,6 +156,7 @@ def create_screens_data(
                 res = re.findall(r"[A-Z][^A-Z]*", name)
                 # if res and len(res) == 2 and res[-1] == "Screen":
                 if res and len(res) > 1 and res[-1] == "Screen":
+                    snake_case = "_"
                     screens += (
                             "\n    '%s': {"
                             "\n        'model': %s,"
@@ -164,9 +165,9 @@ def create_screens_data(
                             "\n    },"
                             % (
                                 f"{' '.join(res).lower()}",
-                                f'{"".join(res)}Model',
-                                f'{"".join(res)}Controller',
-                                f'"{posixpath.join("./View", name, f"{module_name}.kv")}"',
+                                f'{name}Model',
+                                f'{name}Controller',
+                                f'"{posixpath.join("./View", name, f"{snake_case.join(res).lower()}.kv")}"',
                             )
                     )
 
