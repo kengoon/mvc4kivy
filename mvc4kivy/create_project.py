@@ -216,6 +216,7 @@ __all__ = [
 
 import contextlib
 import os
+import posixpath
 import re
 import shutil
 from typing import Union
@@ -1005,7 +1006,7 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
             f'"{" ".join(module_name.split("_"))}"',
             f"{name_screen}Model",
             f"{name_screen}Controller",
-            f"\"{os.path.join(path_to_project, 'View', name_screen, f'{module_name}.kv')}\"",
+            f"\"{posixpath.join('./View', name_screen, f'{module_name}.kv')}\"",
         )
     )
 

@@ -39,6 +39,7 @@ __all__ = [
 ]
 
 import os
+import posixpath
 import re
 
 from kivy import Logger
@@ -165,7 +166,7 @@ def create_screens_data(
                                 f"{' '.join(res).lower()}",
                                 f'{"".join(res)}Model',
                                 f'{"".join(res)}Controller',
-                                f'"{os.path.join(path_to_view, name, f"{module_name}.kv")}"',
+                                f'"{posixpath.join("./View", name, f"{module_name}.kv")}"',
                             )
                     )
 
