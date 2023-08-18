@@ -237,6 +237,9 @@ class BaseScreenModel:
     """Implements a base class for model modules."""
 
     _observers = []
+    
+    def __init__(self, database):
+        self.database = database
 
     def add_observer(self, observer) -> None:
         self._observers.append(observer)
@@ -259,11 +262,7 @@ class BaseScreenModel:
                 break
 '''
 
-temp_database_model = '''import multitasking
-
-from Model.base_model import BaseScreenModel
-
-multitasking.set_max_threads(10)
+temp_database_model = '''from Model.base_model import BaseScreenModel
 
 
 class {name_screen}Model(BaseScreenModel):
@@ -273,26 +272,7 @@ class {name_screen}Model(BaseScreenModel):
     """
 
     def __init__(self, database):
-        # Just an example of the data. Use your own values.
-        self._data = None
-
-    @property
-    def data(self):
-        return self._data
-
-    @data.setter
-    def data(self, value):
-        self._data = value
-        # We notify the View -
-        # :class:`~View.{name_screen}.{module_name}.{name_screen}View` about the
-        # changes that have occurred in the data model.
-        self.notify_observers({notify_name_screen})
-
-    @multitasking.task
-    def check_data(self):
-        """Just an example of the method. Use your own code."""
-
-        self.data = ["example item"]
+        super().__init__(database)
 '''
 
 temp_without_database_model = '''from Model.base_model import BaseScreenModel
@@ -363,10 +343,11 @@ class {name_screen}View(BaseScreenView):
         """
 '''
 
-temp_code_controller = '''{import_module}
+temp_code_controller = '''from .base_controller import BaseScreenController
+{import_module}
 
 
-class {name_screen}Controller:
+class {name_screen}Controller(BaseScreenController):
     """
     The `{name_screen}Controller` class represents a controller implementation.
     Coordinates work of the view with the model.
@@ -374,19 +355,10 @@ class {name_screen}Controller:
     the view to control its actions.
     """
 
-    def __init__(self, model):
-        self.model = model  # Model.{module_name}.{name_screen}Model
-        self.view = {name_view}(controller=self, model=self.model)
-
-    def get_view(self) -> {get_view}:
-        return self.view
 '''
 
 temp_base_screen = '''from kivy.properties import ObjectProperty
-
-from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
-
 from Utility.observer import Observer
 
 
@@ -412,19 +384,11 @@ class BaseScreenView(MDScreen, Observer):
     and defaults to `None`.
     """
 
-    manager_screens = ObjectProperty()
-    """
-    Screen manager object - :class:`~kivymd.uix.screenmanager.MDScreenManager`.
-
-    :attr:`manager_screens` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
-    def __init__(self, **kw):
+    def __init__(self, app, **kw):
         super().__init__(**kw)
         # Often you need to get access to the application object from the view
         # class. You can do this using this attribute.
-        self.app = MDApp.get_running_app()
+        self.app = app
         # Adding a view class as observer.
         self.model.add_observer(self)
 '''
@@ -503,7 +467,6 @@ class {}(MDApp):
             model = screens[name_screen]["model"]({})
             controller = screens[name_screen]["controller"](model)
             view = controller.get_view()
-            view.manager_screens = self.manager_screens
             view.name = name_screen
             self.manager_screens.add_widget(view)
 
@@ -526,6 +489,20 @@ class {}(MDApp):
 # After you finish the project, remove the above code and uncomment the below
 # code to test the application normally without hot reloading.
 '''
+
+temp_base_controller = """
+class BaseScreenController:
+    def __init__(self, app, model):
+        self.app = app
+        self.model = model
+        self.view = None
+        
+    def set_view(self, view):
+        self.view = view
+        
+    def get_view(self):
+        return self.view
+"""
 
 temp_main = '''"""
 The entry point to the application.
@@ -589,9 +566,9 @@ class {}(MDApp):{}
     def load_screen(self, name_screen, switch, first):
         Builder.load_file(screens[name_screen]["kv"])
         model = screens[name_screen]["model"]({})
-        controller = screens[name_screen]["controller"](model)
-
-        view = controller.get_view()
+        controller = screens[name_screen]["controller"](self, model)
+        view = screen[name_screen]["view"](self, model, controller)
+        controller.set_view(view)
         self.root.add_widget(view)
         if switch:
             self.root.current = name_screen
@@ -958,15 +935,14 @@ def create_controller(
                       f"importlib.reload(View.{name_screen}.{module_name})\n\n"
         if use_hotreload == "yes"
         else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
-        name_view=name_view,
-        get_view=f"View.{name_screen}.{module_name}"
-        if use_hotreload == "yes"
-        else f"{name_screen}View",
     )
 
     path_to_controller = os.path.join(path_to_project, "Controller")
+    path_to_base_controller = os.path.join(path_to_controller, "base_controller.py")
     if not os.path.exists(path_to_controller):
         os.mkdir(path_to_controller)
+        with open(path_to_base_controller, "w", encoding="utf-8") as base:
+            base.write(temp_base_controller)
     controller_module = os.path.join(path_to_project, "Controller", module_name)
     with open(f"{controller_module}.py", "w", encoding="utf-8") as module:
         module.write(code_controller)
@@ -998,14 +974,20 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
     temp_screens_imports += (
         f"from Model.{module_name} import {name_screen}Model\n"
         f"from Controller.{module_name} import {name_screen}Controller\n"
+        f"from View.{name_screen}.{module_name} import {name_screen}View"
     )
     temp_screens_data += (
-        '\n    %s: {\n        "model": %s,'
-        '\n        "controller": %s,\n        "kv": %s},\n'
+        '\n    %s: {'
+        '\n        "model": %s,'
+        '\n        "controller": %s,'
+        '\n        "view": %s,'
+        '\n        "kv": %s'
+        '\n    },'
         % (
             f'"{" ".join(module_name.split("_"))}"',
             f"{name_screen}Model",
             f"{name_screen}Controller",
+            f"{name_screen}View",
             f"\"{posixpath.join('./View', name_screen, f'{module_name}.kv')}\"",
         )
     )

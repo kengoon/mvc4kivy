@@ -161,12 +161,14 @@ def create_screens_data(
                             "\n    '%s': {"
                             "\n        'model': %s,"
                             "\n        'controller': %s,"
+                            "\n        'view': %s"
                             "\n        'kv': %s"
                             "\n    },"
                             % (
                                 f"{' '.join(res).lower()}",
                                 f'{name}Model',
                                 f'{name}Controller',
+                                f'{name}View',
                                 f'"{posixpath.join("./View", name, f"{snake_case.join(res).lower()}.kv")}"',
                             )
                     )
