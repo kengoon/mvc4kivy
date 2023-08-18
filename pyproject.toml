@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "mvc4kivy"
-version = "0.1.10"
+version = "0.2.0"
 description = "tool to create MVC project for kivy"
 authors = ["Kenechukwu Akubue <kengoon19@gmail.com>"]
 readme = "README.md"
 
 [[tool.poetry.source]]
 name = "kivy"
-url = "https://kivy.org/downloads/simple"
+url = "https://kivy.org/downloads/mple"
 
 [tool.poetry.dependencies]
 python = "^3.7"
