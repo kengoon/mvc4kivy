@@ -343,7 +343,7 @@ class {name_screen}View(BaseScreenView):
         """
 '''
 
-temp_code_controller = '''from .base_controller import BaseScreenController
+temp_code_controller = '''from Controller.base_controller import BaseScreenController
 
 
 class {name_screen}Controller(BaseScreenController):
@@ -489,8 +489,7 @@ class {}(MDApp):
 # code to test the application normally without hot reloading.
 '''
 
-temp_base_controller = """
-class BaseScreenController:
+temp_base_controller = """class BaseScreenController:
     def __init__(self, app, model):
         self.app = app
         self.model = model
