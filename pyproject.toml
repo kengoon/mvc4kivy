@@ -7,7 +7,7 @@ readme = "README.md"
 
 [[tool.poetry.source]]
 name = "kivy"
-url = "https://kivy.org/downloads/mple"
+url = "https://kivy.org/downloads/simple"
 
 [tool.poetry.dependencies]
 python = "^3.7"
