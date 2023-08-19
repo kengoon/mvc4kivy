@@ -974,7 +974,7 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
     temp_screens_imports += (
         f"from Model.{module_name} import {name_screen}Model\n"
         f"from Controller.{module_name} import {name_screen}Controller\n"
-        f"from View.{name_screen}.{module_name} import {name_screen}View"
+        f"from View.{name_screen}.{module_name} import {name_screen}View\n"
     )
     temp_screens_data += (
         '\n    %s: {'
@@ -982,7 +982,7 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
         '\n        "controller": %s,'
         '\n        "view": %s,'
         '\n        "kv": %s'
-        '\n    },'
+        '\n    }\n,'
         % (
             f'"{" ".join(module_name.split("_"))}"',
             f"{name_screen}Model",

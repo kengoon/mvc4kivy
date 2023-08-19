@@ -146,7 +146,7 @@ def create_screens_data(
     ) as screen_module:
         screen_module = screen_module.read()
         imports = re.findall(
-            "from Model.*Model|from Controller.*Controller", screen_module
+            "from Model.*Model|from Controller.*Controller|from View.*View", screen_module
         )
         screens = ""
         path_to_view = os.path.join(path_to_project, "View")
@@ -177,6 +177,7 @@ def create_screens_data(
         imports.append(
             f"from Controller.{module_name} import {name_view}Controller"
         )
+        imports.append(f"from View.{name_view}.{module_name} import {name_view}View")
         imports.insert(0, screns_comment)
         screens = screens_data % ("\n".join(imports), screens)
 
