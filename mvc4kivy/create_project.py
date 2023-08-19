@@ -969,7 +969,7 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
         '\n        "controller": %s,'
         '\n        "view": %s,'
         '\n        "kv": %s'
-        '\n    }\n,'
+        '\n    },\n'
         % (
             f'"{" ".join(module_name.split("_"))}"',
             f"{name_screen}Model",

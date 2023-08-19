@@ -163,7 +163,7 @@ def create_screens_data(
                             "\n        'controller': %s,"
                             "\n        'view': %s"
                             "\n        'kv': %s"
-                            "\n    },"
+                            "\n    },\n"
                             % (
                                 f"{' '.join(res).lower()}",
                                 f'{name}Model',
