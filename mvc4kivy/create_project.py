@@ -565,7 +565,7 @@ class {}(MDApp):{}
         Builder.load_file(screens[name_screen]["kv"])
         model = screens[name_screen]["model"]({})
         controller = screens[name_screen]["controller"](self, model)
-        view = screen[name_screen]["view"](self, model, controller)
+        view = screens[name_screen]["view"](self, model, controller)
         controller.set_view(view)
         self.root.add_widget(view)
         if switch:
