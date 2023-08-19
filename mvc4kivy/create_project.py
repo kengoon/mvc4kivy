@@ -344,7 +344,6 @@ class {name_screen}View(BaseScreenView):
 '''
 
 temp_code_controller = '''from .base_controller import BaseScreenController
-{import_module}
 
 
 class {name_screen}Controller(BaseScreenController):
@@ -923,19 +922,7 @@ def create_controller(
         if use_hotreload == "yes"
         else f"{name_screen}View"
     )
-    code_controller = temp_code_controller.format(
-        name_screen=name_screen,
-        module_name=module_name,
-        import_module=""
-                      f"import importlib\n\n"
-                      f"import View.{name_screen}.{module_name}\n\n"
-                      f"# We have to manually reload the view module in order to apply the\n"
-                      f"# changes made to the code on a subsequent hot reload.\n"
-                      f"# If you no longer need a hot reload, you can delete this instruction.\n"
-                      f"importlib.reload(View.{name_screen}.{module_name})\n\n"
-        if use_hotreload == "yes"
-        else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
-    )
+    code_controller = temp_code_controller.format(name_screen=name_screen)
 
     path_to_controller = os.path.join(path_to_project, "Controller")
     path_to_base_controller = os.path.join(path_to_controller, "base_controller.py")
