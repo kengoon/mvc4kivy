@@ -161,7 +161,7 @@ def create_screens_data(
                             "\n    '%s': {"
                             "\n        'model': %s,"
                             "\n        'controller': %s,"
-                            "\n        'view': %s"
+                            "\n        'view': %s,"
                             "\n        'kv': %s"
                             "\n    },\n"
                             % (
