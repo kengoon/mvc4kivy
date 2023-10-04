@@ -37,16 +37,16 @@ def main():
             "For example - '--name_screen MyFirstScreen ...'"
         )
 
-    if name_view in os.listdir(os.path.join(path_to_project, "View")):
+    if name_view not in os.listdir(os.path.join(path_to_project, "View")):
         parser.error(
-            f"The <{name_view}> view also exists in the <{path_to_project}> project..."
+            f"The <{name_view}> view does not exists in the <{path_to_project}> project..."
         )
 
     module_name = check_camel_case_name_project(name_view)
     if not module_name:
         parser.error(
             "The name of the screen should be written in camel case style. "
-            "\nFor example - 'MyFirstScreen'"
+            "\nFor example - 'MyFirstScreen' or 'FirstScreen'"
         )
     module_name = "_".join([name.lower() for name in module_name])
     remove_view(name_view, module_name, path_to_project)
