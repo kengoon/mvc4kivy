@@ -10,7 +10,8 @@ from shutil import rmtree
 screens_data = """%s
 
 screens = {%s
-}"""
+}
+"""
 
 screens_comment = """# The screen's dictionary contains the objects of the models and controllers
 # of the screens of the application.
