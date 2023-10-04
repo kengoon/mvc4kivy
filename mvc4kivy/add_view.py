@@ -46,7 +46,7 @@ from kivy import Logger
 
 from . import ArgumentParserWithHelp
 from .create_project import (
-    chek_camel_case_name_project,
+    check_camel_case_name_project,
     create_common_responsive_module,
     create_controller,
     create_model,
@@ -102,14 +102,13 @@ def main():
         if "database.py" in os.listdir(os.path.join(path_to_project, "Model"))
         else "no"
     )
-    module_name = chek_camel_case_name_project(name_view)
+    module_name = check_camel_case_name_project(name_view)
     if not module_name:
         parser.error(
             "The name of the screen should be written in camel case style. "
             "\nFor example - 'MyFirstScreen'"
         )
     module_name = "_".join([name.lower() for name in module_name])
-    path_to_project = path_to_project
     create_model(name_view, module_name, name_database, path_to_project)
 
     # Create controller.
@@ -132,13 +131,13 @@ def main():
         create_view(name_view, module_name, [name_view], path_to_project)
         create_common_responsive_module([name_view], path_to_project)
     # Create 'View.screens.py module'.
-    create_screens_data(name_view, module_name, path_to_project)
+    update_screens_data(name_view, module_name, path_to_project)
     Logger.info(
         f"KivyMD: The {name_view} view has been added to the project..."
     )
 
 
-def create_screens_data(
+def update_screens_data(
         name_view: str, module_name: str, path_to_project: str
 ) -> None:
     with open(

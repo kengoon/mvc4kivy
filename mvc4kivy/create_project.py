@@ -699,7 +699,7 @@ def main():
         create_main()
 
         for name in name_screen:
-            module_name = chek_camel_case_name_project(name)
+            module_name = check_camel_case_name_project(name)
             if not module_name:
                 parser.error(
                     "The name of the screen should be written in camel case style. "
@@ -1009,7 +1009,7 @@ def create_view(
         name_screen: str,
         module_name: str,
         use_responsive: list,
-        path_to_project: str,
+        path_to_project: str
 ) -> None:
     path_to_view = os.path.join(path_to_project, "View", name_screen)
     path_to_components = os.path.join(path_to_view, "components")
@@ -1168,7 +1168,7 @@ def check_databases() -> None:
     )
 
 
-def chek_camel_case_name_project(name_project) -> Union[bool, list]:
+def check_camel_case_name_project(name_project) -> Union[bool, list]:
     result = re.findall(r"[A-Z][^A-Z]*", name_project)
     return False if len(result) == 1 else result
 
