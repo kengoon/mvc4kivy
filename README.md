@@ -7,7 +7,7 @@ like lazy loading of kv file and lazy adding of screen to improve application sp
 # To create a project
 
 ```bash
-## Template command:
+### Template command:
 m4k-createproject name_pattern path_to_project name_project python_version kivy_version
 
 # Example command:
@@ -20,7 +20,7 @@ Also, the project will create a virtual environment with Python 3.10, Kivy versi
 
 <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mvc-base.png"/>
 
-## Creating a project using a database
+### Creating a project using a database
 
 ```bash
 # Template command:
@@ -45,7 +45,7 @@ This command will create a project with an MVC template by default.
 The project will also create a virtual environment with Python 3.10, Kivy version 2.1.0, KivyMD master version 
 and a wrapper for working with the database restdb.io.
 
-## Create project with responsive view
+### Create project with responsive view
 
 When creating a project, you can specify which views should use responsive behavior. 
 To do this, specify the name of the view/views in the –-use_responsive argument:
@@ -65,7 +65,7 @@ m4k-createproject \
 # To add a view
 
 The script creates a new View package in an existing project with an MVC template created using the create_project utility.
-## Use a clean architecture for your applications.
+### Use a clean architecture for your applications.
 To add a new view to an existing project that was created using the create_project utility, use the following command:
 
 ```bash
