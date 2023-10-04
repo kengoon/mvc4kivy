@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mvc4kivy"
-version = "0.3.1"
+version = "0.3.2"
 description = "tool to create MVC project for kivy"
 authors = ["Kenechukwu Akubue <kengoon19@gmail.com>"]
 readme = "README.md"
@@ -20,4 +20,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 m4k-createproject = "mvc4kivy.create_project:main"
 m4k-addview = "mvc4kivy.add_view:main"
-m4k-rmview = "mvc4kivy.add_view:main"
+m4k-rmview = "mvc4kivy.remove_view:main"
