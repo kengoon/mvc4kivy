@@ -59,7 +59,7 @@ def remove_view(
         path_to_project: str
 ) -> None:
     path_to_view = os.path.join(path_to_project, "View", name_screen)
-    path_to_controller = os.path.join(path_to_view, "Controller")
+    path_to_controller = os.path.join(path_to_view, "Controller", name_screen)
     path_to_model = os.path.join(path_to_view, "Model", module_name)
     rmtree(path_to_view)
     os.remove(path_to_controller)

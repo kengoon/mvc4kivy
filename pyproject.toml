@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mvc4kivy"
-version = "0.3.3"
+version = "0.3.4"
 description = "tool to create MVC project for kivy"
 authors = ["Kenechukwu Akubue <kengoon19@gmail.com>"]
 readme = "README.md"
