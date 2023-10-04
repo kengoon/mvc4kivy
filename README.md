@@ -4,6 +4,11 @@ Borrowed from the [kivymd's](https://kivymd.readthedocs.io/en/latest/api/kivymd/
 MVC tool project creator but with some features added
 like lazy loading of kv file and lazy adding of screen to improve application speed at startup.
 
+To install run
+```bash
+pip install mvc4kivy
+```
+
 # To create a project
 
 ```bash
