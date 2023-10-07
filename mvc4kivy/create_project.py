@@ -359,6 +359,7 @@ class {name_screen}Controller(BaseScreenController):
 temp_base_screen = '''from kivy.properties import ObjectProperty
 from kivymd.uix.screen import MDScreen
 from Utility.observer import Observer
+from libs.singleton import screen_extras
 
 
 class BaseScreenView(MDScreen, Observer):
@@ -390,6 +391,19 @@ class BaseScreenView(MDScreen, Observer):
         self.app = app
         # Adding a view class as observer.
         self.model.add_observer(self)
+    
+    def put_extra(self, key, value):
+        screen_extras[key] = value
+
+    def get_extra(self, key):
+        return screen_extras[key]
+    
+    def remove_extra(self, key):
+        del screen_extras[key]
+
+    def switch_screen(self, screen_name):
+        self.app.add_screen(screen_name)
+
 '''
 
 temp_utility = '''
