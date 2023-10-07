@@ -2,10 +2,6 @@ from __future__ import annotations
 
 import socket
 
-from pyrebaselite import initialize_app
-
-firebase = initialize_app({})
-
 
 def get_connect(func, host="8.8.8.8", port=53, timeout=3):
     """Checks for an active Internet connection."""
@@ -32,6 +28,4 @@ class DataBase:
     name = "Firebase"
 
     def __init__(self):
-        self.auth = firebase.auth()
-        self.database = firebase.database()
-        self.storage = firebase.storage()
+        ...

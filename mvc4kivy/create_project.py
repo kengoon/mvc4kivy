@@ -888,6 +888,10 @@ def create_main() -> None:
             os.path.join(path_to_project, "main.py"), "w", encoding="utf-8"
     ) as main_module:
         main_module.write(main_code)
+    with open(
+            os.path.join(path_to_project, "imports.kv"), "w", encoding="utf-8"
+    ) as fp:
+        pass
 
 
 def create_model(
@@ -977,19 +981,19 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
         f"from View.{name_screen}.{module_name} import {name_screen}View\n"
     )
     temp_screens_data += (
-        '\n    %s: {'
-        '\n        "model": %s,'
-        '\n        "controller": %s,'
-        '\n        "view": %s,'
-        '\n        "kv": %s'
-        '\n    },\n'
-        % (
-            f'"{" ".join(module_name.split("_"))}"',
-            f"{name_screen}Model",
-            f"{name_screen}Controller",
-            f"{name_screen}View",
-            f"\"{posixpath.join('./View', name_screen, f'{module_name}.kv')}\"",
-        )
+            '\n    %s: {'
+            '\n        "model": %s,'
+            '\n        "controller": %s,'
+            '\n        "view": %s,'
+            '\n        "kv": %s'
+            '\n    },\n'
+            % (
+                f'"{" ".join(module_name.split("_"))}"',
+                f"{name_screen}Model",
+                f"{name_screen}Controller",
+                f"{name_screen}View",
+                f"\"{posixpath.join('./View', name_screen, f'{module_name}.kv')}\"",
+            )
     )
 
 
