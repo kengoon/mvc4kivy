@@ -232,6 +232,8 @@ temp_basemodel = '''# The model implements the observer pattern. This means that
 # method). For this, observers must be descendants of an abstract class,
 # inheriting which, the `model_is_changed` method must be overridden.
 
+from libs.decorator import android_only
+
 
 class BaseScreenModel:
     """Implements a base class for model modules."""
@@ -239,7 +241,15 @@ class BaseScreenModel:
     _observers = []
     
     def __init__(self, database):
-        self.database = database
+        self.db = database
+        self.__do_android_init__()
+
+    @android_only
+    def __do_android_init__(self):
+        self.__android_init__()
+
+    def __android_init__(self):
+        pass
 
     def add_observer(self, observer) -> None:
         self._observers.append(observer)
@@ -270,9 +280,6 @@ class {name_screen}Model(BaseScreenModel):
     Implements the logic of the
     :class:`~View.{name_screen}.{module_name}.{name_screen}View` class.
     """
-
-    def __init__(self, database):
-        super().__init__(database)
 '''
 
 temp_without_database_model = '''from Model.base_model import BaseScreenModel
@@ -360,6 +367,7 @@ temp_base_screen = '''from kivy.properties import ObjectProperty
 from kivymd.uix.screen import MDScreen
 from Utility.observer import Observer
 from libs.singleton import screen_extras
+from kivy.clock import mainthread
 
 
 class BaseScreenView(MDScreen, Observer):
@@ -370,7 +378,7 @@ class BaseScreenView(MDScreen, Observer):
 
     controller = ObjectProperty()
     """
-    Controller object - :class:`~Controller.controller_screen.ClassScreenControler`.
+    Controller object - :class:`~Controller.controller_screen.ClassScreenController`.
 
     :attr:`controller` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
@@ -392,15 +400,19 @@ class BaseScreenView(MDScreen, Observer):
         # Adding a view class as observer.
         self.model.add_observer(self)
     
-    def put_extra(self, key, value):
+    @staticmethod
+    def put_extra(key, value):
         screen_extras[key] = value
-
-    def get_extra(self, key):
-        return screen_extras[key]
     
-    def remove_extra(self, key):
+    @staticmethod
+    def get_extra(key, default=None):
+        return screen_extras.get(key, default)
+    
+    @staticmethod
+    def remove_extra(key):
         del screen_extras[key]
-
+    
+    @mainthread
     def switch_screen(self, screen_name):
         self.app.add_screen(screen_name)
 
@@ -531,12 +543,14 @@ https://en.wikipedia.org/wiki/Model–view–controller
 {}
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
-from kivymd.uix.transition import MDSlideTransition
-from kivymd.uix.spinner import MDSpinner
+from kivymd.uix.transition import MDSharedAxisTransition
+from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivy.uix.modalview import ModalView
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivymd.utils.set_bars_colors import set_bars_colors
+from kivy.core.window import Window
 
 from View.screens import screens{}
 {}
@@ -544,15 +558,22 @@ from View.screens import screens{}
 class {}(MDApp):{}
     def __init__(self, **kwargs):
         super().__init__(**kwargs){}
-        Builder.load_file("imports.kv")
-        # This is the screen manager that will contain all the screens of your
-        # application.
-        self.theme_cls.primary_palette = "Blue"
-        self.theme_cls.primary_hue = "500"
-        self.theme_cls.material_style = "M3"
-        self.root = MDScreenManager(transition=MDSlideTransition())
         {}
-        spinner = MDSpinner(line_width=dp(1.5))
+        self.dialog = None
+        self.theme_cls.bind(
+            theme_style=self.update_colors,
+            surfaceColor=Window.setter("clearcolor")
+        )
+    
+    def build(self):
+        # Uncomment me if you need me
+        # Builder.load_file("imports.kv")
+        # self.theme_cls.theme_style = "Dark"
+        # self.theme_cls.primary_palette = "Black"
+        # self.theme_cls.dynamic_scheme_name = "FRUIT_SALAD"
+        # self.theme_cls.dynamic_scheme_contrast = -1
+        
+        spinner = MDCircularProgressIndicator(line_width=dp(1.5))
         self.dialog = ModalView(
             auto_dismiss=False,
             background="",
@@ -563,7 +584,19 @@ class {}(MDApp):{}
             on_dismiss=lambda _: setattr(spinner, "active", False)
         )
         self.dialog.add_widget(spinner)
-        self.add_screen("login screen", first=True)
+        
+        # This is the screen manager that will contain all the screens of your
+        # application.
+        self.root = MDScreenManager(transition=MDSharedAxisTransition())
+        self.add_screen("replace me screen", first=True)
+    
+    @staticmethod
+    def update_colors(instance, value):
+        set_bars_colors(
+            instance.surfaceColor,
+            instance.surfaceColor,
+            "Dark" if value == "Light" else "Light"
+        )
         
     def add_screen(self, name_screen, switch=True, first=False):
         if first:
@@ -881,7 +914,7 @@ def create_main() -> None:
         '        """Switch lang."""\n\n'
         '        self.lang = "ru" if self.lang == "en" else "en"\n'
         if use_localization == "yes"
-        else "",
+        else "\n",
         project_name,
     )
     with open(

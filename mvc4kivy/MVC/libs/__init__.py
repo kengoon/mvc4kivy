@@ -30,3 +30,12 @@ def shorten_text(text, lbl_width, lines=1, suffix="... See more", font_size=sp(1
             return ""
         t = text_width(new_text + suffix + " more")[0]
     return new_text + suffix
+
+
+def get_dict_pos(lst, key, value):
+    return next((index for (index, d) in enumerate(lst) if d[key] == value), None)
+
+
+def search_dict(search_term, data_key, data):
+    a = filter(lambda search_found: search_term in search_found[data_key], data)
+    return list(a)
